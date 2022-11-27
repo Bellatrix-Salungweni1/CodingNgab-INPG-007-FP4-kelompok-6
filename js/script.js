@@ -27,6 +27,7 @@ myForm.addEventListener("submit", function (event) {
       `https://weatherapi-com.p.rapidapi.com/history.json?q=${inputNegara}&dt=${inputTanggal}`,options)
       .then((res) => res.json())
       .then((response) => {
+        hideLoading()
         showDataSuccess(response);
       })
       .catch((err) => {
@@ -58,3 +59,29 @@ document.addEventListener("keyup", function(event) {
       btnSubmit.click()
   }
 });
+
+const btn = document.querySelector("#btn-submit");
+
+btn.addEventListener("click", fetchHandler);
+
+const loader = document.querySelector("#loading");
+
+const loader2 = document.querySelector("#loadbackground");
+
+function displayLoading() {
+    loader.classList.add("display");
+    loader2.classList.add("display");
+    setTimeout(() => {
+      loader.classList.remove("display");
+      loader2.classList.remove("display");
+  }, 3000);
+}
+
+function hideLoading() {
+    loader.classList.remove("display");
+    loader2.classList.remove("display");
+}
+
+function fetchHandler(event) {
+    displayLoading()
+}
