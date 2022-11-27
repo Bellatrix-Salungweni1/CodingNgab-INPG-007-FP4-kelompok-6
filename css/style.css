@@ -56,3 +56,12 @@ input {
     margin-top: 15px;
     text-decoration: none;
 }
+h3#title-data-gagal {
+    color: red;
+    text-align: center;
+    margin-top: 70px;
+    font-size: 30px;
+}
+.display-none {
+    display: none !important;
+}
