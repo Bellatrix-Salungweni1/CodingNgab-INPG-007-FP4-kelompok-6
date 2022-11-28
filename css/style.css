@@ -2,7 +2,7 @@
 :root {
     --main-color : rgb(33,37,41);
     --second-color : #F49D1A;
-    --third-color : #F8DF8B;
+    --third-color : #f3e4b5;
     --fourth-color: #CD104D;
 }
 body{
@@ -110,3 +110,11 @@ h3#title-data-gagal {
         transform: rotate(360deg);
     }
 }  
+#chart{
+    margin-top: 20px;
+    margin-left: 220px;
+    border-radius: 10px;
+    background-color: var(--third-color);
+    width: 1800px;
+    height: 1600px;
+}

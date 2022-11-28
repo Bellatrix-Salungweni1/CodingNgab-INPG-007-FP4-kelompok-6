@@ -2,6 +2,7 @@ var dataSuccess = document.querySelector("#data-success");
 var dataGagal = document.querySelector("#data-gagal");
 var myForm = document.getElementById("myform");
 var btnSubmit = document.querySelector('#btn-submit');
+const chart = document.querySelector('#chart');
 const options = {
   method: "GET",
   headers: {
@@ -29,6 +30,33 @@ myForm.addEventListener("submit", function (event) {
       .then((response) => {
         hideLoading()
         showDataSuccess(response);
+        const time = response.forecast.forecastday[0].hour.map(
+          function(index){
+              return index.time
+          })
+      const suhu = response.forecast.forecastday[0].hour.map(
+          function(index){
+              return index.temp_c
+          })
+      const kelembapan = response.forecast.forecastday[0].hour.map(
+            function(index){
+                return index.humidity
+            })
+      const kecepatanAngin = response.forecast.forecastday[0].hour.map(
+            function(index){
+                return index.wind_kph
+            })
+      const tekanan = response.forecast.forecastday[0].hour.map(
+            function(index){
+                return index.pressure_mb
+            })
+      
+          chartSuhu.data.labels = time;
+          chartSuhu.data.datasets[0].data = suhu;
+          chartSuhu.data.datasets[1].data = kelembapan;
+          chartSuhu.data.datasets[2].data = kecepatanAngin;
+          chartSuhu.data.datasets[3].data = tekanan;
+          chartSuhu.update()  
       })
       .catch((err) => {
         showDataGagal();
@@ -85,3 +113,45 @@ function hideLoading() {
 function fetchHandler(event) {
     displayLoading()
 }
+const chartSuhu = new Chart(chart, {
+  type: 'line',
+  data: {
+    labels: [''],
+    datasets: [{
+      label: 'suhu(Celsius)',
+      data: [''],
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1,
+      borderWidth: 2
+    },
+    {
+      label: 'kelembapan(%)',
+      data: [''],
+      borderColor: 'rgb(173, 21, 21)',
+      tension: 0.1,
+      borderWidth: 2
+    },
+    {
+      label: 'Kecepatan Angin(Km/h)',
+      data: [''],
+      borderColor: 'rgb(64, 255, 0)',
+      tension: 0.1,
+      borderWidth: 2
+    },
+    {
+      label: 'Tekanan(Milibar)',
+      data: [''],
+      borderColor: 'rgb(0, 4, 255)',
+      tension: 0.1,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+          beginformzero: true
+      }
+    }
+  }
+});
+
