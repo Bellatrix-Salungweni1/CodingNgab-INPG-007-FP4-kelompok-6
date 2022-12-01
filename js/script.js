@@ -2,7 +2,13 @@ var dataSuccess = document.querySelector("#data-success");
 var dataGagal = document.querySelector("#data-gagal");
 var myForm = document.getElementById("myform");
 var btnSubmit = document.querySelector('#btn-submit');
-const chart = document.querySelector('#chart');
+var btnClose = document.querySelector('#closeBtn')
+const chart1 = document.querySelector('#chart1');
+const chart2 = document.querySelector('#chart2');
+const chart3 = document.querySelector('#chart3');
+const chart4 = document.querySelector('#chart4');
+const popUpBg = document.querySelector('#popUpBg');
+const popUpChart = document.querySelector('#popUpChart');
 const options = {
   method: "GET",
   headers: {
@@ -23,56 +29,59 @@ myForm.addEventListener("submit", function (event) {
     });
     return false;
   } else {
-
     fetch(
       `https://weatherapi-com.p.rapidapi.com/history.json?q=${inputNegara}&dt=${inputTanggal}`,options)
       .then((res) => res.json())
       .then((response) => {
         hideLoading()
         showDataSuccess(response);
+        popUpBg.classList.add('active');
+        popUpChart.classList.add('active');
         const time = response.forecast.forecastday[0].hour.map(
           function(index){
               return index.time
           })
-      const suhu = response.forecast.forecastday[0].hour.map(
+        const suhu = response.forecast.forecastday[0].hour.map(
           function(index){
               return index.temp_c
           })
-      const kelembapan = response.forecast.forecastday[0].hour.map(
+        const kelembapan = response.forecast.forecastday[0].hour.map(
             function(index){
                 return index.humidity
             })
-      const kecepatanAngin = response.forecast.forecastday[0].hour.map(
+        const kecepatanAngin = response.forecast.forecastday[0].hour.map(
             function(index){
                 return index.wind_kph
             })
-      const tekanan = response.forecast.forecastday[0].hour.map(
+        const tekanan = response.forecast.forecastday[0].hour.map(
             function(index){
                 return index.pressure_mb
             })
-      
-          chartSuhu.data.labels = time;
-          chartSuhu.data.datasets[0].data = suhu;
-          chartSuhu.data.datasets[1].data = kelembapan;
-          chartSuhu.data.datasets[2].data = kecepatanAngin;
-          chartSuhu.data.datasets[3].data = tekanan;
-          chartSuhu.update()  
+        chartSuhu.data.labels = time;
+        chartKelembapan.data.labels = time;
+        chartkecepatanAngin.data.labels = time;
+        chartTekanan.data.labels = time;
+        chartSuhu.data.datasets[0].data = suhu;
+        chartKelembapan.data.datasets[0].data = kelembapan;
+        chartkecepatanAngin.data.datasets[0].data = kecepatanAngin;
+        chartTekanan.data.datasets[0].data = tekanan;
+        chartSuhu.update()
+        chartKelembapan.update()
+        chartkecepatanAngin.update()
+        chartTekanan.update()
       })
-      .catch((err) => {
-        showDataGagal();
-      });
+    .catch((err) => {
+      showDataGagal();
+    });
   }
 });
 
 function showDataSuccess(response) {
   document.querySelector("#Negara").innerHTML = response.location.name;
-  document.querySelector("#tanggal").innerHTML =
-    response.forecast.forecastday[0].date;
-  document.querySelector("#condition").innerHTML =
-    response.forecast.forecastday[0].hour[23].condition.text;
-  document.querySelector("#temprature").innerHTML =
-    response.forecast.forecastday[0].hour[23].temp_c;
-
+  document.querySelector("#tanggal").innerHTML = response.forecast.forecastday[0].date;
+  document.querySelector("#condition").innerHTML = response.forecast.forecastday[0].hour[23].condition.text;
+  var icon = 'https:'+ response.forecast.forecastday[0].hour[23].condition.icon;
+  document.querySelector('#icon').src = icon
   dataGagal.classList.add("display-none");
   dataSuccess.classList.remove("display-none");
 }
@@ -92,8 +101,11 @@ const btn = document.querySelector("#btn-submit");
 
 btn.addEventListener("click", fetchHandler);
 
+btnClose.addEventListener('click', function() {
+  popUpBg.classList.remove('active');
+  popUpChart.classList.remove('active');
+});
 const loader = document.querySelector("#loading");
-
 const loader2 = document.querySelector("#loadbackground");
 
 function displayLoading() {
@@ -113,35 +125,15 @@ function hideLoading() {
 function fetchHandler(event) {
     displayLoading()
 }
-const chartSuhu = new Chart(chart, {
+
+const chartSuhu = new Chart(chart1, {
   type: 'line',
   data: {
     labels: [''],
     datasets: [{
-      label: 'suhu(Celsius)',
+      label: 'Temprature(Celsius)',
       data: [''],
       borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1,
-      borderWidth: 2
-    },
-    {
-      label: 'kelembapan(%)',
-      data: [''],
-      borderColor: 'rgb(173, 21, 21)',
-      tension: 0.1,
-      borderWidth: 2
-    },
-    {
-      label: 'Kecepatan Angin(Km/h)',
-      data: [''],
-      borderColor: 'rgb(64, 255, 0)',
-      tension: 0.1,
-      borderWidth: 2
-    },
-    {
-      label: 'Tekanan(Milibar)',
-      data: [''],
-      borderColor: 'rgb(0, 4, 255)',
       tension: 0.1,
       borderWidth: 2
     }]
@@ -154,4 +146,68 @@ const chartSuhu = new Chart(chart, {
     }
   }
 });
+
+const chartKelembapan = new Chart(chart2, {
+  type: 'line',
+  data: {
+    labels: [''],
+    datasets: [{
+      label: 'Humidity(%)',
+      data: [''],
+      borderColor: 'rgb(255, 0, 0)',
+      tension: 0.1,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+          beginformzero: true
+      }
+    }
+  }
+});
+
+const chartkecepatanAngin = new Chart(chart3, {
+type: 'line',
+data: {
+  labels: [''],
+  datasets: [{
+    label: 'Wind(Kph)',
+    data: [''],
+    borderColor: 'rgb(98, 0, 255)',
+    tension: 0.1,
+    borderWidth: 2
+  }]
+},
+options: {
+  scales: {
+    y: {
+        beginformzero: true
+    }
+  }
+}
+});
+
+const chartTekanan = new Chart(chart4, {
+type: 'line',
+data: {
+  labels: [''],
+  datasets: [{
+    label: 'Pressure(Millibar)',
+    data: [''],
+    borderColor: 'rgb(238, 255, 0)',
+    tension: 0.1,
+    borderWidth: 2
+  }]
+},
+options: {
+  scales: {
+    y: {
+        beginformzero: true
+    }
+  }
+}
+});
+
 

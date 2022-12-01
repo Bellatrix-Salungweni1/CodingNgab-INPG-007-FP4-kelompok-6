@@ -9,37 +9,54 @@
   <link rel="shortcut icon" href="./img/icon.ico">
 </head>
 <body>
-  <h1>View your city's weather data</h1>
+
   <form id="myform">
-    <div id="input">
-      <input type="text" id="inputnegara" placeholder="Enter country name">
-      <input type="date" id="inputtanggal" placeholder="Select date"><br>
-      <div id="submit">
-        <button id="btn-submit" type="submit">See result</button>
+      <div id="input">
+        <img src="./img/logo.png" alt="">
+        <h1>Check your city's weather data</h1>
+        <input type="text" id="inputnegara" placeholder="Your city">
+        <input type="date" id="inputtanggal"><br>
+        <div id="submit">
+          <button id="btn-submit" type="submit">See result</button>
+        </div>
+        <div id="data-gagal" class="display-none">
+          <h3 id="title-data-gagal">
+            The country you are looking for is not found!!
+          </h3>
+        </div>
       </div>
-    </div>
   </form>
+
   <div id="loadbackground">
     <div id="loadinglayer">
-    <div id="loading"></div>
+      <div id="loading"></div>
+    </div>
   </div>
-  </div>
-  <div id="data-success" class="display-none">
-    <h1 id="Negara"></h1>
-    <h1 id="tanggal"></h1>
-    <h1>Condition:</h1>
-    <p id="condition"></p>
-    <h1>Temprature(Celcius):</h1>
-    <p id="temprature"></p>
-  </div>
-  <div id="data-gagal" class="display-none">
-    <h3 id="title-data-gagal">
-      Negara yang anda cari tidak ditemukan!!
-    </h3>
-  </div>
-  <div>
-    <canvas id="chart"></canvas>
-</div>
+  
+  <div id="popUpBg"></div>
+  <div id="popUpChart">
+    <div id="data-success" class="display-none">
+      <div class="data">
+        <div>
+          <p id="Negara"></p>
+          <p id="tanggal"></p>  
+        </div>
+        <div class="c1">
+            <p id="condition"></p>    
+            <img id="icon" src="#" alt="">
+        </div>
+      </div>
+    </div>
+    <div id="row1">
+      <canvas id="chart1"></canvas>
+      <canvas id="chart2"></canvas>
+    </div>
+    <div id="row2">
+      <canvas id="chart3"></canvas>
+      <canvas id="chart4"></canvas>
+    </div>
+      <button id="closeBtn" >Close</button>
+    </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
