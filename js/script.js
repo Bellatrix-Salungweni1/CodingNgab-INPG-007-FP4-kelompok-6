@@ -17,6 +17,17 @@ const options = {
   },
 };
 
+addZero = function(num){
+  return ('0'+num).slice(-2);
+}
+
+const past7Days = [...Array(7).keys()].map(index => {
+const date = new Date();
+date.setDate(date.getDate() - index);
+const day = date.getFullYear() + '-' +addZero(date.getMonth()+1) + '-' + addZero(date.getDate());
+return day;
+});
+
 myForm.addEventListener("submit", function (event) {
   event.preventDefault();
   var inputNegara = document.querySelector("#inputnegara").value;
@@ -82,6 +93,8 @@ function showDataSuccess(response) {
   document.querySelector("#condition").innerHTML = response.forecast.forecastday[0].hour[23].condition.text;
   var icon = 'https:'+ response.forecast.forecastday[0].hour[23].condition.icon;
   document.querySelector('#icon').src = icon
+  document.querySelector("#temprature").innerHTML =
+  response.forecast.forecastday[0].hour[23].temp_c + "°C";
   dataGagal.classList.add("display-none");
   dataSuccess.classList.remove("display-none");
 }
@@ -209,5 +222,3 @@ options: {
   }
 }
 });
-
-
